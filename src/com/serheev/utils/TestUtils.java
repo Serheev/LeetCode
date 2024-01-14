@@ -10,17 +10,12 @@ public final class TestUtils {
     }
 
     public static void executionTime(Runnable method) {
-        long startTime = System.nanoTime();
+        Timer timer = Timer.getTimer();
+        timer.start();
         method.run();
-        long endTime = System.nanoTime();
-
-        Duration duration = Duration.ofNanos(endTime - startTime);
-        long minutes = duration.toMinutesPart();
-        long seconds = duration.toSecondsPart();
-        long millis = duration.toMillisPart();
-        long nanos = duration.toNanosPart();
-
-        System.out.println("Executed time: " + minutes + " M, " + seconds + " S, " + millis + " ms, " + nanos + " ns");
+        timer.stop();
+        timer.printDuration();
+        Timer.removeTimer();
     }
 
     public static void printResult(int[] args) {
@@ -35,7 +30,43 @@ public final class TestUtils {
         System.out.println(getMethodName());
     }
 
-    private static String getMethodName(){
+    private static String getMethodName() {
         return Thread.currentThread().getStackTrace()[3].getMethodName();
+    }
+
+    public static class Timer {
+        private long startTime;
+        private long endTime;
+
+        private Timer() {
+        }
+
+        private static final ThreadLocal<Timer> threadLocalTimer = ThreadLocal.withInitial(Timer::new);
+
+        public static Timer getTimer() {
+            return threadLocalTimer.get();
+        }
+
+        public static void removeTimer() {
+            threadLocalTimer.remove();
+        }
+
+        public void start() {
+            startTime = System.nanoTime();
+        }
+
+        public void stop() {
+            endTime = System.nanoTime();
+        }
+
+        public void printDuration() {
+            Duration duration = Duration.ofNanos(endTime - startTime);
+            long minutes = duration.toMinutesPart();
+            long seconds = duration.toSecondsPart();
+            long millis = duration.toMillisPart();
+            long nanos = duration.toNanosPart();
+
+            System.out.println("Executed time: " + minutes + " M, " + seconds + " S, " + millis + " ms, " + nanos + " ns");
+        }
     }
 }
