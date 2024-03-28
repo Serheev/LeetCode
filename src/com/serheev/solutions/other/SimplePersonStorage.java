@@ -1,4 +1,4 @@
-package com.serheev.solutions.data_structures;
+package com.serheev.solutions.other;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

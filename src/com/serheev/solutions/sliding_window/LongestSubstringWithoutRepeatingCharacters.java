@@ -1,4 +1,4 @@
-package com.serheev.solutions.array;
+package com.serheev.solutions.sliding_window;
 
 import com.serheev.utils.TestUtils;
 
@@ -9,30 +9,21 @@ import java.util.regex.Pattern;
 /**
  * 3. Longest Substring Without Repeating Characters
  * Task: Given a string s, find the length of the longest substring without repeating characters. *
+ *
+ * @author Yurii Serheev
  */
 public class LongestSubstringWithoutRepeatingCharacters {
-
-    public static void main(String[] args) {
-        System.out.println(lengthOfLongestSubstring("abcabcbb")); // 3
-        System.out.println(lengthOfLongestSubstring("bbbbb")); // 1
-        System.out.println(lengthOfLongestSubstring("pwwkew rawwwwwwwwww")); // 6
-        System.out.println(lengthOfLongestSubstring(" ")); // 1
-        System.out.println(lengthOfLongestSubstring("")); // 0
-        System.out.println(lengthOfLongestSubstring(null)); // 0
-
-        TestUtils.executionTime(() -> lengthOfLongestSubstring("pwwkew rawwwwwwwwww"));
-        TestUtils.executionTime(() -> lengthOfLongestSubstringWithArray("pwwkew rawwwwwwwwww"));
-    }
 
     /**
      * Using HashMap
      * <p>
-     * Time complexity O(N), Space complexity O(N)
+     * Time complexity: O(N)
+     * Space complexity: O(N)
      *
      * @param s argument
      * @return int - Maximum Length of Substring Without Repeating Characters
      */
-    public static int lengthOfLongestSubstring(String s) {
+    public static int lengthOfLongestSubstringWithMap(String s) {
         if (!ConditionsValidator.meetConditions(s)) {
             return 0;
         }
@@ -56,10 +47,10 @@ public class LongestSubstringWithoutRepeatingCharacters {
     /**
      * Using Array
      * <p>
-     * Time complexity O(N), Space complexity O(1)
+     * Time complexity: O(N)
+     * Space complexity: O(1)
      *
      * @param s argument
-     * @return int - Maximum Length of Substring Without Repeating Characters
      */
     public static int lengthOfLongestSubstringWithArray(String s) {
         if (!ConditionsValidator.meetConditions(s)) {
@@ -74,6 +65,7 @@ public class LongestSubstringWithoutRepeatingCharacters {
             maxLength = Math.max(maxLength, right - left + 1);
             index[s.charAt(right)] = right + 1;
         }
+
         return maxLength;
     }
 
@@ -96,6 +88,25 @@ public class LongestSubstringWithoutRepeatingCharacters {
         private ConditionsValidator() {
             throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
         }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(lengthOfLongestSubstringWithMap("abcabcbb")); // 3
+        System.out.println(lengthOfLongestSubstringWithMap("bbbbb")); // 1
+        System.out.println(lengthOfLongestSubstringWithMap("pwwkew rawwwwwwwwww")); // 6
+        System.out.println(lengthOfLongestSubstringWithMap(" ")); // 1
+        System.out.println(lengthOfLongestSubstringWithMap("")); // 0
+        System.out.println(lengthOfLongestSubstringWithMap(null)); // 0
+        System.out.println();
+        System.out.println(lengthOfLongestSubstringWithArray("abcabcbb")); // 3
+        System.out.println(lengthOfLongestSubstringWithArray("bbbbb")); // 1
+        System.out.println(lengthOfLongestSubstringWithArray("pwwkew rawwwwwwwwww")); // 6
+        System.out.println(lengthOfLongestSubstringWithArray(" ")); // 1
+        System.out.println(lengthOfLongestSubstringWithArray("")); // 0
+        System.out.println(lengthOfLongestSubstringWithArray(null)); // 0
+
+        TestUtils.executionTime(() -> lengthOfLongestSubstringWithMap("pwwkew rawwwwwwwwww"));
+        TestUtils.executionTime(() -> lengthOfLongestSubstringWithArray("pwwkew rawwwwwwwwww"));
     }
 
 }

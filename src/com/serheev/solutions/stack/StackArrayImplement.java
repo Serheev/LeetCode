@@ -1,4 +1,4 @@
-package com.serheev.solutions.data_structures.stack;
+package com.serheev.solutions.stack;
 
 import java.util.Arrays;
 import java.util.EmptyStackException;
