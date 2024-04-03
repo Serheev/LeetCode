@@ -5,9 +5,15 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
- * Edit Distance
- * Calculate the edit distance of two given non-empty strings of length no more than 10^2, containing lowercase
- * letters of the Latin alphabet.
+ * 72. Edit Distance
+ * <p>Task: Given two strings word1 and word2, return the minimum number of operations required to convert word1 to word2.
+ * <p>You have the following three operations permitted on a word:
+ *<ul>
+ * <li>Insert a character</li>
+ * <li>Delete a character</li>
+ * <li>Replace a character</li>
+ * </ul>
+ * @author Yurii Serheiev
  */
 public class EditDistance {
 
@@ -26,30 +32,66 @@ public class EditDistance {
     /**
      * Return the Edit Distance for two words
      * <p>
-     * Time complexity O(m*n), Space complexity O(m*n)
+     * Time complexity: O(n*m),
+     * Space complexity: O(n*m)
      *
-     * @param str1 String
-     * @param str2 String
+     * @param string1 String
+     * @param string2 String
      * @return int - Edit distance for two words
      */
-    public static int editDistance(String str1, String str2) {
-        int m = str1.length();
-        int n = str2.length();
-        int[][] dp = new int[m + 1][n + 1];
+    public int editDistance(String string1, String string2) {
+        int n = string1.length();
+        int m = string2.length();
+        int[][] dp = new int[n + 1][m + 1];
 
-        for (int i = 0; i <= m; i++) {
-            for (int j = 0; j <= n; j++) {
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= m; j++) {
                 if (i == 0)
                     dp[i][j] = j;
                 else if (j == 0)
                     dp[i][j] = i;
-                else if (str1.charAt(i - 1) == str2.charAt(j - 1))
+                else if (string1.charAt(i - 1) == string2.charAt(j - 1))
                     dp[i][j] = dp[i - 1][j - 1];
                 else
                     dp[i][j] = 1 + Math.min(Math.min(dp[i][j - 1], dp[i - 1][j]), dp[i - 1][j - 1]);
             }
         }
 
-        return dp[m][n];
+        return dp[n][m];
     }
+
+    /**
+     * Return the Edit Distance for two words
+     * <p>
+     * Time complexity: O(n*m)
+     * Space complexity: O(m)
+     *
+     * @param string1 String
+     * @param string2 String
+     * @return int - Edit distance for two words
+     */
+    public int editDistanceOpt(String string1, String string2) {
+        int n = string1.length();
+        int m = string2.length();
+        int[] dp = new int[m + 1];
+
+        for (int i = 0; i <= n; i++) {
+            int prev = i;
+            for (int j = 0; j <= m; j++) {
+                int temp = dp[j];
+                if (i == 0)
+                    dp[j] = j;
+                else if (j == 0)
+                    dp[j] = i;
+                else if (string1.charAt(i - 1) == string2.charAt(j - 1))
+                    dp[j] = prev;
+                else
+                    dp[j] = 1 + Math.min(Math.min(dp[j], dp[j - 1]), prev);
+                prev = temp;
+            }
+        }
+
+        return dp[m];
+    }
+
 }
